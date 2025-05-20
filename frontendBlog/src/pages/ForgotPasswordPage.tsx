@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FormContainer } from '../components/FormContainer';
 import '../styles/forgot-password.css';
 
 export function ForgotPasswordPage() {
@@ -32,7 +33,7 @@ export function ForgotPasswordPage() {
   };
 
   return (
-    <div className="forgot-container">
+    <FormContainer>
       <form className="forgot-form" onSubmit={handleSubmit}>
         <h2>Esqueci a senha</h2>
         <p>Sem problemas! Informe seu e-mail e enviaremos um link para redefinir sua senha.</p>
@@ -65,6 +66,6 @@ export function ForgotPasswordPage() {
           Lembrou a senha? <a href="/login">Voltar ao login</a>
         </p>
       </form>
-    </div>
+    </FormContainer>
   );
 }

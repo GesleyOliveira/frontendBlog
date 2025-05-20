@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FormContainer } from '../components/FormContainer';
 import '../styles/login.css';
 
 export function LoginPage() {
@@ -31,7 +32,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="login-container">
+    <FormContainer>
       <form onSubmit={handleSubmit} className="login-form">
         <h1>Bem-vindo de volta!</h1>
         <p>Acesse sua conta para acompanhar artigos exclusivos, favoritar e muito mais.</p>
@@ -62,6 +63,6 @@ export function LoginPage() {
           <Link to="/register">Clique aqui</Link>
         </div>
       </form>
-    </div>
+    </FormContainer>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FormContainer } from '../components/FormContainer';
 
 export function RegisterPage() {
   const [name, setName] = useState('');
@@ -31,7 +32,7 @@ export function RegisterPage() {
   };
 
   return (
-    <div>
+    <FormContainer>
       <h2>Cadastro</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -57,6 +58,6 @@ export function RegisterPage() {
         />
         <button type="submit">Cadastrar</button>
       </form>
-    </div>
+    </FormContainer>
   );
 }
