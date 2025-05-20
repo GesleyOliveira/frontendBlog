@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import '../styles/login.css';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       const res = await fetch('http://localhost:3000/users/login', {
         method: 'POST',
@@ -29,12 +31,14 @@ export function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h1>Bem-vindo de volta!</h1>
+        <p>Acesse sua conta para acompanhar artigos exclusivos, favoritar e muito mais.</p>
+
         <input
           type="email"
-          placeholder="E-mail"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -46,7 +50,17 @@ export function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Entrar</button>
+
+        <div className="form-links">
+          <Link to="/forgot-password">Esqueceu a senha?</Link>
+        </div>
+
+        <button type="submit">Login</button>
+
+        <div className="form-footer">
+          <span>Novo usuário? </span>
+          <Link to="/register">Clique aqui</Link>
+        </div>
       </form>
     </div>
   );
