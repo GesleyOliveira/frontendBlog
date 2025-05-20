@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 export function PrivateRoute({ children }: Props) {
@@ -11,5 +11,5 @@ export function PrivateRoute({ children }: Props) {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 }
