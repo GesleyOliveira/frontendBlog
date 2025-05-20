@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react'
 import '../styles/global.css';
+
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -34,8 +36,11 @@ export function ForgotPasswordPage() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Esqueci a senha</h2>
-        <p>Sem problemas! Informe seu e-mail e redefina sua senha.</p>
+        <div className="auth-title">
+          <ArrowLeft className="back-icon" onClick={() => navigate('/login')} />
+          <h2>Esqueci a senha</h2>
+        </div>
+        <p>Sem problemas! Informe seu e-mail e enviaremos um link para redefinir sua senha</p>
 
         <input
           type="email"

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/global.css'; // Apenas o global
+import { ArrowLeft } from 'lucide-react';
+import '../styles/global.css'; 
+
 
 export function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -38,7 +40,10 @@ export function RegisterPage() {
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Registrar</h2>
+        <div className="auth-title">
+          <ArrowLeft className="back-icon" onClick={() => navigate('/login')} />
+          <h2>Registrar</h2>
+        </div>
         <p>
           Crie sua conta para explorar conteúdos incríveis, seguir autores e participar da comunidade.
         </p>
@@ -68,6 +73,13 @@ export function RegisterPage() {
         />
 
         <button type="submit">Criar conta</button>
+
+        <div className="auth-checkbox">
+          <input type="checkbox" id="terms" required />
+          <label htmlFor="terms">
+            Li e concordo com os Termos de Uso e a Política de Privacidade.
+          </label>
+        </div>
 
         <div className="auth-footer">
           <span>Já tem cadastro? </span>
