@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FormContainer } from '../components/FormContainer';
-import '../styles/forgot-password.css';
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/global.css';
 
 export function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -33,10 +32,10 @@ export function ForgotPasswordPage() {
   };
 
   return (
-    <FormContainer>
-      <form className="forgot-form" onSubmit={handleSubmit}>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
         <h2>Esqueci a senha</h2>
-        <p>Sem problemas! Informe seu e-mail e enviaremos um link para redefinir sua senha.</p>
+        <p>Sem problemas! Informe seu e-mail e redefina sua senha.</p>
 
         <input
           type="email"
@@ -62,10 +61,10 @@ export function ForgotPasswordPage() {
 
         <button type="submit">Alterar</button>
 
-        <p className="back-login">
-          Lembrou a senha? <a href="/login">Voltar ao login</a>
-        </p>
+        <div className="auth-footer">
+          Lembrou a senha? <Link to="/login">Voltar ao login</Link>
+        </div>
       </form>
-    </FormContainer>
+    </div>
   );
 }

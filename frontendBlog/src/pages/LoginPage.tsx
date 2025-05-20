@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FormContainer } from '../components/FormContainer';
-import '../styles/login.css';
+import '../styles/global.css'; 
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -32,8 +31,8 @@ export function LoginPage() {
   };
 
   return (
-    <FormContainer>
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-container">
+      <form onSubmit={handleSubmit} className="auth-form">
         <h1>Bem-vindo de volta!</h1>
         <p>Acesse sua conta para acompanhar artigos exclusivos, favoritar e muito mais.</p>
 
@@ -52,17 +51,17 @@ export function LoginPage() {
           required
         />
 
-        <div className="form-links">
+        <div className="auth-links">
           <Link to="/forgot-password">Esqueceu a senha?</Link>
         </div>
 
         <button type="submit">Login</button>
 
-        <div className="form-footer">
+        <div className="auth-footer">
           <span>Novo usuário? </span>
           <Link to="/register">Clique aqui</Link>
         </div>
       </form>
-    </FormContainer>
+    </div>
   );
 }

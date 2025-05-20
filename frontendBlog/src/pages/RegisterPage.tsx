@@ -1,31 +1,34 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FormContainer } from '../components/FormContainer';
-
+import { useNavigate, Link } from 'react-router-dom';
+import '../styles/global.css'; // Apenas o global
 
 export function RegisterPage() {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (password !== confirmPassword) {
+      return alert('As senhas não coincidem.');
+    }
+
     try {
       const res = await fetch('http://localhost:3000/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        alert('Cadastro realizado com sucesso!');
-        navigate('/');
+        alert('Usuário registrado com sucesso!');
+        navigate('/login');
       } else {
-        alert(data.message || 'Erro ao cadastrar usuário.');
+        alert(data.message || 'Erro ao registrar.');
       }
     } catch {
       alert('Erro de conexão com o servidor.');
@@ -33,32 +36,44 @@ export function RegisterPage() {
   };
 
   return (
-    <FormContainer>
-      <h2>Cadastro</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Registrar</h2>
+        <p>
+          Crie sua conta para explorar conteúdos incríveis, seguir autores e participar da comunidade.
+        </p>
+
         <input
           type="email"
-          placeholder="E-mail"
+          placeholder="Email"
+          required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
+
         <input
           type="password"
           placeholder="Senha"
+          required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
-        <button type="submit">Cadastrar</button>
+
+        <input
+          type="password"
+          placeholder="Confirmar senha"
+          required
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
+        <button type="submit">Criar conta</button>
+
+        <div className="auth-footer">
+          <span>Já tem cadastro? </span>
+          <Link to="/login">Clique aqui</Link>
+        </div>
       </form>
-    </FormContainer>
+    </div>
   );
 }

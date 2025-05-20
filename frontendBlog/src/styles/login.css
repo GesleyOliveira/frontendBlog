@@ -1,78 +1,70 @@
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #fff;
-}
-
-.auth-container {
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: #fff;
-  padding: 1rem;
 }
 
-
-.auth-form {
-  max-width: 360px;
+.login-form {
   width: 100%;
+  max-width: 360px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
+  margin-top: -180px; 
 }
 
-
-.auth-form h1,
-.auth-form h2 {
+.login-form h1 {
   font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
-
-.auth-form p {
+.login-form p {
   font-size: 0.9rem;
   color: #555;
-  margin: 0 0 0.5rem;
   line-height: 1.4;
 }
 
-
-.auth-form input {
+.login-form input {
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
 }
 
-.auth-form button {
+.form-links {
+  text-align: right;
+  font-size: 0.8rem;
+}
+
+.form-links a {
+  color: #333;
+  text-decoration: underline;
+}
+
+.login-form button {
   padding: 0.75rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background-color: #000;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
 }
 
-.auth-form button:hover {
+.login-form button:hover {
   background-color: #222;
 }
 
-
-.auth-footer,
-.auth-links {
+.form-footer {
   font-size: 0.8rem;
   text-align: center;
 }
 
-.auth-footer a,
-.auth-links a {
+.form-footer a {
   text-decoration: underline;
   color: #000;
 }
-
