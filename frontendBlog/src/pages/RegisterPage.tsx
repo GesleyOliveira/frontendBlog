@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormContainer } from '../components/FormContainer';
 
+
 export function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
