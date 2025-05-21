@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { Navbar } from '../components/Navbar';
 import '../styles/profile.css';
 
 interface UserProfile {
@@ -77,6 +78,8 @@ export function ProfilePage() {
 
   return (
     <div className="profile-container">
+      <Navbar />
+      
       <div className="profile-header">
         <span className="profile-back" onClick={() => navigate(-1)}>
           <ArrowLeft />

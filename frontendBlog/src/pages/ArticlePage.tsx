@@ -1,7 +1,7 @@
-// src/pages/ArticlesPage.tsx
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/home.css';
+import { Navbar } from '../components/Navbar';
+import { ArticleCard } from '../components/ArticleCard';
+import '../styles/article.css';
 
 interface Author {
   name: string;
@@ -28,24 +28,22 @@ export function ArticlesPage() {
 
   return (
     <div className="home-container">
+      <Navbar />
+      
       {articles.map((article) => (
-        <Link to={`/articles/${article.id}`} key={article.id} className="article-card">
-          {article.coverImage && (
-            <img
-              src={`http://localhost:3000/uploads/${article.coverImage}`}
-              alt="Capa"
-              className="article-image"
-            />
-          )}
-          <h3 className="article-title">{article.title}</h3>
-          <p className="article-subtitle">
-            {article.content.length > 120 ? article.content.slice(0, 120) + '...' : article.content}
-          </p>
-          <div className="article-meta">
-            <span>Por {article.author.name}</span> ·{' '}
-            <span>{new Date(article.createdAt).toLocaleDateString('pt-BR')}</span>
-          </div>
-        </Link>
+        <ArticleCard
+          key={article.id}
+          title={article.title}
+          subtitle={
+            article.content.length > 120
+              ? article.content.slice(0, 120) + '...'
+              : article.content
+          }
+          author={article.author.name}
+          date={new Date(article.createdAt).toLocaleDateString('pt-BR')}
+          image={`http://localhost:3000/uploads/${article.coverImage}`}
+          linkTo={`/articles/${article.id}`}
+        />
       ))}
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Navbar } from '../components/Navbar';
 import '../styles/article-form.css';
 
 export function ArticleFormPage() {
@@ -63,6 +64,8 @@ export function ArticleFormPage() {
 
   return (
     <div className="article-form-container">
+      <Navbar />
+      
       <h2>{isEditing ? 'Editar Artigo' : 'Novo Artigo'}</h2>
       <form onSubmit={handleSubmit} className="article-form">
         <label className="banner-preview">
