@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import '../styles/global.css'; 
 
-
 export function RegisterPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -13,27 +13,37 @@ export function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      return alert('As senhas não coincidem.');
-    }
+    const checkbox = document.getElementById('terms') as HTMLInputElement;
 
-    try {
-      const res = await fetch('http://localhost:3000/users/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+    if (!email.trim()) {
+      alert('O campo de e-mail é obrigatório.');
+    } else if (!password.trim()) {
+      alert('O campo de senha é obrigatório.');
+    } else if (!confirmPassword.trim()) {
+      alert('Confirme sua senha.');
+    } else if (password !== confirmPassword) {
+      alert('As senhas não coincidem.');
+    } else if (!checkbox?.checked) {
+      alert('Você deve aceitar os Termos de Uso e Política de Privacidade.');
+    } else {
+      try {
+        const res = await fetch('http://localhost:3000/users/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (res.ok) {
-        alert('Usuário registrado com sucesso!');
-        navigate('/login');
-      } else {
-        alert(data.message || 'Erro ao registrar.');
+        if (res.ok) {
+          alert('Usuário registrado com sucesso!');
+          navigate('/login');
+        } else {
+          alert(data.message || 'Erro ao registrar.');
+        }
+      } catch {
+        alert('Erro de conexão com o servidor.');
       }
-    } catch {
-      alert('Erro de conexão com o servidor.');
     }
   };
 
@@ -47,6 +57,14 @@ export function RegisterPage() {
         <p>
           Crie sua conta para explorar conteúdos incríveis, seguir autores e participar da comunidade.
         </p>
+
+         <input
+          type="text"
+          placeholder="Nome"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
         <input
           type="email"
