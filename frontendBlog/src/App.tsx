@@ -1,19 +1,18 @@
 // src/App.tsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { HomePage } from './pages/HomePage';
-import { ArticlesPage } from './pages/ArticlesPage';
-import { SettingsPage } from './pages/SettingsPage';
+import { ArticlesPage } from './pages/ArticlePage';
+//import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
-import { MyArticlesPage } from './pages/MyArticlesPage';
-import { NewArticlePage } from './pages/NewArticlePage';
+//import { MyArticlesPage } from './pages/MyArticlesPage';
+//import { NewArticlePage } from './pages/NewArticlePage';
 import { PrivateRoute } from './components/PrivateRoute';
 
 function App() {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -38,14 +37,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/settings"
-          element={
-            <PrivateRoute>
-              <SettingsPage />
-            </PrivateRoute>
-          }
-        />
+
 
         <Route
           path="/profile"
@@ -56,25 +48,9 @@ function App() {
           }
         />
 
-        <Route
-          path="/my-articles"
-          element={
-            <PrivateRoute>
-              <MyArticlesPage />
-            </PrivateRoute>
-          }
-        />
 
-        <Route
-          path="/new-article"
-          element={
-            <PrivateRoute>
-              <NewArticlePage />
-            </PrivateRoute>
-          }
-        />
+
       </Routes>
-    </Router>
   );
 }
 

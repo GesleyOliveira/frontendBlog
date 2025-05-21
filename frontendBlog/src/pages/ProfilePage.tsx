@@ -1,4 +1,3 @@
-// src/pages/ProfilePage.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -84,45 +83,69 @@ export function ProfilePage() {
         </span>
         <h2>Perfil</h2>
       </div>
+
       <form className="profile-form" onSubmit={handleSubmit}>
-        <div className="avatar-section">
-          <img src={`http://localhost:3000/uploads/${user.avatar}`} alt="avatar" />
-          <input value={user.avatar} disabled />
+        <div className="profile-header">
+          <img
+            src={`http://localhost:3000/uploads/${user.avatar}`}
+            alt="avatar"
+            className="profile-avatar"
+          />
+          <input
+            className="profile-avatar-input"
+            value={user.avatar}
+            disabled
+          />
         </div>
 
-        <input
-          type="text"
-          placeholder="Nome"
-          value={user.name}
-          onChange={(e) => setUser({ ...user, name: e.target.value })}
-          required
-        />
+        <div>
+          <label>Nome</label>
+          <input
+            type="text"
+            value={user.name}
+            onChange={(e) => setUser({ ...user, name: e.target.value })}
+            required
+          />
+        </div>
 
-        <input
-          type="text"
-          placeholder="Sobrenome"
-          value={user.surname}
-          onChange={(e) => setUser({ ...user, surname: e.target.value })}
-          required
-        />
+        <div>
+          <label>Sobrenome</label>
+          <input
+            type="text"
+            value={user.surname}
+            onChange={(e) => setUser({ ...user, surname: e.target.value })}
+            required
+          />
+        </div>
 
-        <input type="email" value={user.email} disabled />
+        <div className="profile-divider" />
 
-        <input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div>
+          <label>Email</label>
+          <input type="email" value={user.email} disabled />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Confirmar senha"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <div>
+          <label>Senha</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-        <button type="submit">Salvar</button>
+        <div>
+          <label>Confirmar senha</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+
+        <button type="submit" className="profile-button">
+          Salvar
+        </button>
       </form>
     </div>
   );

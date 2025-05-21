@@ -1,29 +1,69 @@
-import { ArticleCard } from '../components/ArticleCard';
+import { useEffect, useState } from 'react';
 import '../styles/home.css';
 
-const mockArticles = [
-  {
-    title: 'Desvendando o JavaScript: Dicas e Técnicas Essenciais',
-    subtitle: 'Neste artigo, exploramos estratégias modernas para desenvolvedores JavaScript.',
-    author: 'John Doe',
-    date: 'Março 20, 2025',
-    image: 'https://via.placeholder.com/600x300?text=JS',
-  },
-  {
-    title: 'Dominando TypeScript: Por que a Tipagem Estática Está Transformando o Desenvolvimento',
-    subtitle: 'TypeScript tem se tornado popular entre desenvolvedores por sua segurança.',
-    author: 'Mary Smith',
-    date: 'Março 20, 2025',
-    image: 'https://via.placeholder.com/600x300?text=TS',
-  }
-];
+interface Article {
+  id: number;
+  title: string;
+  content: string;
+  coverImage: string;
+  createdAt: string;
+  author: {
+    name: string;
+  };
+}
 
 export function HomePage() {
+  const [articles, setArticles] = useState<Article[]>([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/articles');
+        const data = await res.json();
+        setArticles(data);
+      } catch (err) {
+        console.error('Erro ao buscar artigos:', err);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  if (articles.length === 0) return <p>Carregando artigos...</p>;
+
+  const [featured, ...newArticles] = articles;
+
   return (
     <div className="home-container">
-      {mockArticles.map((article, index) => (
-        <ArticleCard key={index} {...article} />
-      ))}
+      <div className="featured-article">
+        <img
+          src={`http://localhost:3000/uploads/${featured.coverImage}`}
+          alt="Capa do artigo"
+        />
+        <h2>{featured.title}</h2>
+        <p>{featured.content.slice(0, 100)}...</p>
+        <div className="author-info">
+          <img src="/user-default.png" alt="Autor" />
+          <span>
+            Por {featured.author.name} •{' '}
+            {new Date(featured.createdAt).toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </span>
+        </div>
+      </div>
+
+      <div className="section-new">
+        <h3>New</h3>
+        {newArticles.map((article) => (
+          <div key={article.id} className="section-new-article">
+            <strong>{article.title}</strong>
+            <p>{article.content.slice(0, 80)}...</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
