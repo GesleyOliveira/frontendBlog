@@ -9,6 +9,7 @@ interface Article {
   createdAt: string;
   author: {
     name: string;
+    avatar?: string;
   };
 }
 
@@ -43,7 +44,14 @@ export function HomePage() {
         <h2>{featured.title}</h2>
         <p>{featured.content.slice(0, 100)}...</p>
         <div className="author-info">
-          <img src="/user-default.png" alt="Autor" />
+          <img
+            src={
+              featured.author.avatar
+                ? `http://localhost:3000/uploads/${featured.author.avatar}`
+                : '/sem-foto.png'
+            }
+            alt="Autor"
+          />
           <span>
             Por {featured.author.name} •{' '}
             {new Date(featured.createdAt).toLocaleDateString('pt-BR', {
