@@ -4,7 +4,12 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { HomePage } from './pages/HomePage';
-
+import { ArticlesPage } from './pages/ArticlesPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { MyArticlesPage } from './pages/MyArticlesPage';
+import { NewArticlePage } from './pages/NewArticlePage';
+import { PrivateRoute } from './components/PrivateRoute';
 
 function App() {
   return (
