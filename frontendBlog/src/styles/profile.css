@@ -83,3 +83,12 @@
 .profile-button:hover {
   background-color: #333;
 }
+
+.avatar-preview {
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+}
+

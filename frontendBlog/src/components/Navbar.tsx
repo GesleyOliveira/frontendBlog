@@ -9,8 +9,12 @@ export function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const token = localStorage.getItem('token');
 
-  // 🔄 Carrega avatar, se logado
+
   useEffect(() => {
+    const avatarFromStorage = localStorage.getItem('avatar');
+    if (avatarFromStorage) setAvatar(avatarFromStorage);
+
+    const token = localStorage.getItem('token');
     if (!token) return;
 
     const fetchProfile = async () => {
@@ -22,15 +26,17 @@ export function Navbar() {
 
         const data = await res.json();
         setAvatar(data.avatar);
+        localStorage.setItem('avatar', data.avatar); 
       } catch (err) {
         console.error('Erro ao carregar avatar:', err);
       }
     };
 
     fetchProfile();
-  }, [token]);
+  }, []);
 
-  // Fecha dropdown ao clicar fora
+
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -47,7 +53,7 @@ export function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/');
+    navigate('/home');
   };
 
   const handleAvatarClick = () => {
@@ -61,7 +67,7 @@ export function Navbar() {
           <span className="navbar-logo">M.</span>
         </div>
         <div className="navbar-right">
-          <Link to="/">Home</Link>
+          <Link to="/home">Home</Link>
           <Link to="/articles">Artigos</Link>
           <span className="separator">|</span>
 
@@ -72,7 +78,7 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/articles/new">Publicar</Link>
+              <Link to="/NewArticlePage">Publicar</Link>
               <div className="avatar-dropdown" ref={dropdownRef}>
                 <img
                   src={avatar ? `http://localhost:3000/uploads/${avatar}` : '/sem-foto.png'}

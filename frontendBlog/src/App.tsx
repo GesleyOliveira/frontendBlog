@@ -1,47 +1,45 @@
-// src/App.tsx
 import { Routes, Route } from 'react-router-dom';
+import { PrivateRoute } from './components/PrivateRoute';
+
+import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
-import { HomePage } from './pages/HomePage';
-import { ArticlesPage } from './pages/ArticlePage';
+import { ArticlesPage } from './pages/ArticlesPage';
+import { NewArticlePage } from './pages/NewArticlePage';
+import { EditArticlePage } from './pages/EditArticlePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
-import { MyArticles } from './pages/MyArticles';
-// import { NewArticlePage } from './pages/NewArticlePage';
-import { PrivateRoute } from './components/PrivateRoute';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/home" element={<HomePage />} />
+
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
+      <Route path="/articles" element={<ArticlesPage />} />
+
       <Route
-        path="/articles"
+        path="/articles/new"
         element={
           <PrivateRoute>
-            <ArticlesPage />
+            <NewArticlePage />
           </PrivateRoute>
         }
       />
+
       <Route
-        path="/articles/:id"
+        path="/articles/edit/:id"
         element={
           <PrivateRoute>
-            <ArticlesPage />
+            <EditArticlePage />
           </PrivateRoute>
         }
-      />
-      <Route
-        path="/my-articles"
-        element={
-          <PrivateRoute>
-            <MyArticles />
-          </PrivateRoute>
-        }
+
       />
       <Route
         path="/settings"
@@ -50,6 +48,7 @@ function App() {
             <SettingsPage />
           </PrivateRoute>
         }
+
       />
       <Route
         path="/profile"
