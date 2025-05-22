@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/Navbar';
-import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import '../styles/home.css';
 
@@ -11,17 +10,12 @@ interface Article {
   createdAt: string;
   author: {
     name: string;
-    surname?: string;
     avatar?: string;
   };
 }
 
 export function HomePage() {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [liked, setLiked] = useState<number[]>(() => {
-    const stored = localStorage.getItem('liked');
-    return stored ? JSON.parse(stored) : [];
-  });
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -37,30 +31,14 @@ export function HomePage() {
     fetchArticles();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('liked', JSON.stringify(liked));
-  }, [liked]);
-
-  const toggleLike = (id: number) => {
-    setLiked((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
   if (articles.length === 0) return <p>Carregando artigos...</p>;
-
-  const sortedArticles = [...articles].sort((a, b) => {
-    const aLiked = liked.includes(a.id);
-    const bLiked = liked.includes(b.id);
-    if (aLiked === bLiked) return 0;
-    return aLiked ? -1 : 1;
-  });
 
   return (
     <div className="home-container">
-      <Navbar />
-
-      {sortedArticles.map((article) => (
+      <div className="navbar-wrapper">
+        <Navbar />
+      </div>
+      {articles.map((article) => (
         <Link
           to={`/articles/${article.id}`}
           key={article.id}
@@ -83,8 +61,7 @@ export function HomePage() {
                   alt="Autor"
                 />
                 <span className="author-text">
-                  Por {article.author.name}
-                  {article.author.surname ? ` ${article.author.surname}` : ''} –{' '}
+                  Por {article.author.name} –{' '}
                   {new Date(article.createdAt).toLocaleDateString('pt-BR', {
                     day: '2-digit',
                     month: 'long',
@@ -92,16 +69,6 @@ export function HomePage() {
                   })}
                 </span>
               </div>
-              <Heart
-                size={18}
-                fill={liked.includes(article.id) ? 'red' : 'none'}
-                stroke="red"
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleLike(article.id);
-                }}
-                className="heart-icon"
-              />
             </div>
           </div>
         </Link>

@@ -2,6 +2,8 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background-color: #fff;
+  overflow-y: auto; 
+  padding: 0rem 2rem 0rem;
 }
 
 .auth-container {
@@ -116,6 +118,14 @@ body {
   cursor: pointer;
   width: 24px;
   height: 24px;
+}
+
+.author-details img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
 }
 
 
