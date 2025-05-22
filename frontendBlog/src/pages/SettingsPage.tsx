@@ -27,7 +27,7 @@ export function SettingsPage() {
 
       <div className="settings-menu">
         <button onClick={() => navigate('/profile')}>Perfil</button>
-        <button onClick={() => navigate('/my-articles')}>Meus Artigos</button>
+        <button onClick={() => navigate('/MyArticles')}>Meus Artigos</button>
         <button onClick={() => navigate('/create-article')}>Criar novo Artigo</button>
       </div>
 

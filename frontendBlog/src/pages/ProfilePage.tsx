@@ -16,34 +16,35 @@ export function ProfilePage() {
 
   const token = localStorage.getItem('token');
 
-  // 🔄 Carrega o perfil do usuário
-  const fetchProfile = async () => {
-    if (!token) return navigate('/login');
-
-    try {
-      const res = await fetch('http://localhost:3000/users/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) throw new Error('Não autorizado');
-
-      const data = await res.json();
-      setName(data.name);
-      setSurname(data.surname || '');
-      setEmail(data.email);
-      setAvatar(data.avatar);
-    } catch (err) {
-      console.error('Erro ao buscar perfil:', err);
-      navigate('/login');
-    }
-  };
-
   useEffect(() => {
-    if (!token) return navigate('/login');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/users/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error('Não autorizado');
+
+        const data = await res.json();
+        setName(data.name);
+        setSurname(data.surname || '');
+        setEmail(data.email);
+        setAvatar(data.avatar);
+      } catch (err) {
+        console.error('Erro ao buscar perfil:', err);
+        navigate('/login');
+      }
+    };
+
     fetchProfile();
-  }, []);
+  }, [navigate, token]);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -71,7 +72,7 @@ export function ProfilePage() {
       if (password) formData.append('password', password);
       if (avatarFile) formData.append('avatar', avatarFile);
 
-      const res = await axios.put(
+      const res = await axios.put<{ avatar?: string }>(
         'http://localhost:3000/users/update-profile',
         formData,
         {
@@ -82,10 +83,10 @@ export function ProfilePage() {
         }
       );
 
-      // Atualiza avatar localmente se backend retornar novo nome
-      if (res.data?.avatar) setAvatar(res.data.avatar);
+      if (res.data.avatar) {
+        setAvatar(res.data.avatar);
+      }
 
-      await fetchProfile();
       alert('Perfil atualizado com sucesso!');
     } catch (err) {
       console.error('Erro ao atualizar perfil:', err);
@@ -106,18 +107,10 @@ export function ProfilePage() {
 
       <form className="profile-form" onSubmit={handleSubmit}>
         <label>Nome</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
 
         <label>Sobrenome</label>
-        <input
-          type="text"
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
-        />
+        <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)} />
 
         <div className="profile-divider" />
 
@@ -125,22 +118,12 @@ export function ProfilePage() {
         <input type="email" value={email} readOnly disabled />
 
         <label>Senha</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
         <label>Confirmar Senha</label>
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
 
-        <button className="profile-button" type="submit">
-          Salvar
-        </button>
+        <button className="profile-button" type="submit">Salvar</button>
       </form>
     </div>
   );
