@@ -21,6 +21,13 @@ export function LoginPage() {
 
       if (res.ok && data.token) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('user_id', String(data.user.id));
+        localStorage.setItem('avatar', data.user.avatar || '');
+
+        console.log('TOKEN:', data.token);
+        console.log('USER ID:', data.user.id);
+        console.log('AVATAR:', data.user.avatar);
+
         navigate('/home');
       } else {
         alert(data.message || 'Erro ao fazer login.');

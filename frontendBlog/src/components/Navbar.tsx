@@ -78,7 +78,7 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/NewArticlePage">Publicar</Link>
+              <Link to="/articles/new">Publicar</Link>
               <div className="avatar-dropdown" ref={dropdownRef}>
                 <img
                   src={avatar ? `http://localhost:3000/uploads/${avatar}` : '/sem-foto.png'}

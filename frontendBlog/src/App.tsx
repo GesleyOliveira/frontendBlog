@@ -10,6 +10,7 @@ import { NewArticlePage } from './pages/NewArticlePage';
 import { EditArticlePage } from './pages/EditArticlePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { ArticleDetailPage } from './pages/ArticleDetailPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/articles/:id" element={<ArticleDetailPage />} />
 
       <Route path="/articles" element={<ArticlesPage />} />
 
