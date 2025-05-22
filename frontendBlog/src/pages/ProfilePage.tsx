@@ -1,152 +1,144 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { Navbar } from '../components/Navbar';
 import '../styles/profile.css';
-
-interface UserProfile {
-  name: string;
-  surname: string;
-  email: string;
-  avatar: string;
-}
+import axios from 'axios';
 
 export function ProfilePage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserProfile>({
-    name: '',
-    surname: '',
-    email: '',
-    avatar: '',
-  });
+
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [avatar, setAvatar] = useState('');
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return navigate('/login');
+  const token = localStorage.getItem('token');
 
+  // 🔄 Carrega o perfil do usuário
+  const fetchProfile = async () => {
+    if (!token) return navigate('/login');
+
+    try {
       const res = await fetch('http://localhost:3000/users/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data);
-      } else {
-        alert('Erro ao carregar perfil.');
-        navigate('/login');
-      }
-    };
+      if (!res.ok) throw new Error('Não autorizado');
 
-    fetchUser();
-  }, [navigate]);
+      const data = await res.json();
+      setName(data.name);
+      setSurname(data.surname || '');
+      setEmail(data.email);
+      setAvatar(data.avatar);
+    } catch (err) {
+      console.error('Erro ao buscar perfil:', err);
+      navigate('/login');
+    }
+  };
+
+  useEffect(() => {
+    if (!token) return navigate('/login');
+    fetchProfile();
+  }, []);
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setAvatarFile(e.target.files[0]);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+
+    if (!token) {
+      alert('Você precisa estar logado para atualizar seu perfil.');
+      return;
+    }
+
+    if (password && password !== confirmPassword) {
       alert('As senhas não coincidem.');
       return;
     }
 
-    const token = localStorage.getItem('token');
-    if (!token) return;
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('surname', surname);
+      if (password) formData.append('password', password);
+      if (avatarFile) formData.append('avatar', avatarFile);
 
-    const res = await fetch('http://localhost:3000/users/profile', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: user.name,
-        surname: user.surname,
-        password,
-      }),
-    });
+      const res = await axios.put(
+        'http://localhost:3000/users/update-profile',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
-    const data = await res.json();
-    if (res.ok) {
+      // Atualiza avatar localmente se backend retornar novo nome
+      if (res.data?.avatar) setAvatar(res.data.avatar);
+
+      await fetchProfile();
       alert('Perfil atualizado com sucesso!');
-    } else {
-      alert(data.message || 'Erro ao atualizar perfil.');
+    } catch (err) {
+      console.error('Erro ao atualizar perfil:', err);
+      alert('Erro ao atualizar perfil.');
     }
   };
 
   return (
     <div className="profile-container">
-      <Navbar />
-      
       <div className="profile-header">
-        <span className="profile-back" onClick={() => navigate(-1)}>
-          <ArrowLeft />
-        </span>
-        <h2>Perfil</h2>
+        <img
+          src={avatar ? `http://localhost:3000/uploads/${avatar}` : '/sem-foto.png'}
+          className="profile-avatar"
+          alt="Avatar"
+        />
+        <input type="file" accept="image/*" onChange={handleAvatarChange} />
       </div>
 
       <form className="profile-form" onSubmit={handleSubmit}>
-        <div className="profile-header">
-          <img
-            src={`http://localhost:3000/uploads/${user.avatar}`}
-            alt="avatar"
-            className="profile-avatar"
-          />
-          <input
-            className="profile-avatar-input"
-            value={user.avatar}
-            disabled
-          />
-        </div>
+        <label>Nome</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-        <div>
-          <label>Nome</label>
-          <input
-            type="text"
-            value={user.name}
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Sobrenome</label>
-          <input
-            type="text"
-            value={user.surname}
-            onChange={(e) => setUser({ ...user, surname: e.target.value })}
-            required
-          />
-        </div>
+        <label>Sobrenome</label>
+        <input
+          type="text"
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
+        />
 
         <div className="profile-divider" />
 
-        <div>
-          <label>Email</label>
-          <input type="email" value={user.email} disabled />
-        </div>
+        <label>Email</label>
+        <input type="email" value={email} readOnly disabled />
 
-        <div>
-          <label>Senha</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <label>Senha</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <div>
-          <label>Confirmar senha</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
+        <label>Confirmar Senha</label>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
-        <button type="submit" className="profile-button">
+        <button className="profile-button" type="submit">
           Salvar
         </button>
       </form>

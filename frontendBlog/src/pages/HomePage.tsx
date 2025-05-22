@@ -35,9 +35,7 @@ export function HomePage() {
 
   return (
     <div className="home-container">
-      <div className="navbar-wrapper">
         <Navbar />
-      </div>
       {articles.map((article) => (
         <Link
           to={`/articles/${article.id}`}
