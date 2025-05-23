@@ -48,7 +48,6 @@ export function RegisterPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Lado esquerdo com fundo escuro e logo */}
       <div className="w-1/2 bg-black text-white hidden lg:flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-7xl font-bold">M.</h1>
@@ -56,7 +55,6 @@ export function RegisterPage() {
         </div>
       </div>
 
-      {/* Formulário */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-4">
         <form
           className="w-full max-w-md space-y-4"

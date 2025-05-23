@@ -32,13 +32,13 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen">
-      {/* Lado esquerdo (logo + fundo escuro) */}
+
       <div className="hidden md:flex flex-col justify-center items-center bg-black text-white w-1/2">
         <span className="text-7xl font-bold">M.</span>
         <p className="mt-4 text-sm">Inovação ao Seu Alcance.</p>
       </div>
 
-      {/* Lado direito (formulário) */}
+
       <div className="flex flex-1 justify-center items-center bg-white">
         <form onSubmit={handleSubmit} className="w-full max-w-md px-6">
           <h2 className="text-center text-xl font-semibold mb-6">Conectar</h2>
