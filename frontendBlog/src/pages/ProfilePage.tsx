@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/profile.css';
+import { Navbar } from '../components/Navbar';
 
 export function ProfilePage() {
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ export function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('/sem-foto.png');
-
   const token = localStorage.getItem('token');
 
   const fetchProfile = useCallback(async () => {
@@ -93,48 +92,88 @@ export function ProfilePage() {
   };
 
   return (
-    <div className="profile-container">
-      <form className="profile-form" onSubmit={handleSubmit}>
-        <div className="profile-header">
-          <div className="form-left">
-            <h2>Editar Perfil</h2>
+    <div className="min-h-screen bg-white">
+      <Navbar />
 
-            <label>Inserir avatar</label>
-            <input type="file" accept="image/*" onChange={handleAvatarChange} />
-            <br />
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col lg:flex-row justify-between max-w-5xl mx-auto gap-8 px-4 py-10"
+      >
+        <div className="flex-1">
+          <h2 className="text-xl font-semibold mb-6">Editar Perfil</h2>
 
-            <label>Nome</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <label className="block mb-1 font-medium">Inserir avatar</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            className="block mb-4 border border-gray-300 rounded px-3 py-2 w-full"
+          />
 
-            <label>Sobrenome</label>
-            <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)} />
+          <label className="block mb-1 font-medium">Nome</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="block mb-4 border border-gray-300 rounded px-3 py-2 w-full"
+          />
 
-            <label>Email</label>
-            <input type="email" value={email} disabled readOnly />
+          <label className="block mb-1 font-medium">Sobrenome</label>
+          <input
+            type="text"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+            className="block mb-4 border border-gray-300 rounded px-3 py-2 w-full"
+          />
 
-            <label>Senha</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <label className="block mb-1 font-medium">Email</label>
+          <input
+            type="email"
+            value={email}
+            disabled
+            readOnly
+            className="block mb-4 border border-gray-200 bg-gray-100 text-gray-500 rounded px-3 py-2 w-full"
+          />
 
-            <label>Confirmar Senha</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+          <label className="block mb-1 font-medium">Senha</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="block mb-4 border border-gray-300 rounded px-3 py-2 w-full"
+          />
 
-            <div className="actions">
-              <button type="button" onClick={() => navigate('/')}>Cancelar</button>
-              <button type="submit">Salvar</button>
-            </div>
+          <label className="block mb-1 font-medium">Confirmar Senha</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="block mb-6 border border-gray-300 rounded px-3 py-2 w-full"
+          />
+
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => navigate('/')}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="bg-black text-white px-4 py-2 rounded hover:bg-gray-900"
+            >
+              Salvar
+            </button>
           </div>
+        </div>
 
-          <div className="form-right">
-            <img
-              src={preview}
-              alt="Preview do avatar"
-              className="avatar-preview"
-            />
-          </div>
+        <div className="w-full lg:w-60">
+          <img
+            src={preview}
+            alt="Preview do avatar"
+            className="rounded w-full object-cover"
+          />
         </div>
       </form>
     </div>

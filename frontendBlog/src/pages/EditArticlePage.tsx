@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/newArticle.css';
 
 interface Article {
   title: string;
@@ -70,25 +69,64 @@ export function EditArticlePage() {
   };
 
   return (
-    <div className="new-article-container">
-      <div className="new-article-header">
-        <h2>Editar Artigo</h2>
-        <div className="actions">
-          <button className="cancel" onClick={() => navigate('/articles')}>Cancelar</button>
-          <button className="save" onClick={handleSubmit}>Salvar</button>
+    <div className="min-h-screen bg-white px-6 py-10 max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-2xl font-semibold">Editar Artigo</h2>
+        <div className="space-x-2">
+          <button
+            type="button"
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            onClick={() => navigate('/articles')}
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={handleSubmit}
+          >
+            Salvar
+          </button>
         </div>
       </div>
 
-      <form className="new-article-form" onSubmit={handleSubmit}>
-        <label>Título</label>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block mb-1 font-medium">Título</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+          />
+        </div>
 
-        <label>Inserir imagem</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        {preview && <img src={preview} alt="Preview" className="preview-image" />}
+        <div>
+          <label className="block mb-1 font-medium">Inserir imagem</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="mb-2"
+          />
+          {preview && (
+            <img
+              src={preview}
+              alt="Preview"
+              className="max-w-xs h-auto border rounded"
+            />
+          )}
+        </div>
 
-        <label>Texto</label>
-        <textarea rows={10} value={content} onChange={(e) => setContent(e.target.value)} />
+        <div>
+          <label className="block mb-1 font-medium">Texto</label>
+          <textarea
+            rows={12}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="w-full border rounded px-3 py-2 resize-none focus:outline-none focus:ring focus:border-blue-400"
+          />
+        </div>
       </form>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/loading.css';
+
 
 export function LoadingPage() {
   const navigate = useNavigate();

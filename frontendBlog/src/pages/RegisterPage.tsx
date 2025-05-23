@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import '../styles/global.css'; 
 
 export function RegisterPage() {
   const [name, setName] = useState('');
@@ -48,62 +47,94 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <div className="auth-title">
-          <ArrowLeft className="back-icon" onClick={() => navigate('/login')} />
-          <h2>Registrar</h2>
+    <div className="min-h-screen flex">
+      {/* Lado esquerdo com fundo escuro e logo */}
+      <div className="w-1/2 bg-black text-white hidden lg:flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-7xl font-bold">M.</h1>
+          <p className="mt-2 text-sm">Inovação ao Seu Alcance.</p>
         </div>
-        <p>
-          Crie sua conta para explorar conteúdos incríveis, seguir autores e participar da comunidade.
-        </p>
+      </div>
 
-         <input
-          type="text"
-          placeholder="Nome"
-          required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      {/* Formulário */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-4">
+        <form
+          className="w-full max-w-md space-y-4"
+          onSubmit={handleSubmit}
+        >
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="flex items-center text-gray-600 hover:text-black mb-2"
+          >
+            <ArrowLeft className="mr-2" size={18} />
+            Voltar ao login
+          </button>
 
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <h2 className="text-2xl font-semibold">Registrar</h2>
 
-        <input
-          type="password"
-          placeholder="Senha"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            type="text"
+            placeholder="Nome"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-2 border rounded bg-gray-100"
+          />
 
-        <input
-          type="password"
-          placeholder="Confirmar senha"
-          required
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border rounded bg-gray-100"
+          />
 
-        <button type="submit">Criar conta</button>
+          <input
+            type="password"
+            placeholder="Senha"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 border rounded bg-gray-100"
+          />
 
-        <div className="auth-checkbox">
-          <input type="checkbox" id="terms" required />
-          <label htmlFor="terms">
-            Li e concordo com os Termos de Uso e a Política de Privacidade.
-          </label>
-        </div>
+          <input
+            type="password"
+            placeholder="Confirmar senha"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full px-4 py-2 border rounded bg-gray-100"
+          />
 
-        <div className="auth-footer">
-          <span>Já tem cadastro? </span>
-          <Link to="/login">Clique aqui</Link>
-        </div>
-      </form>
+          <div className="flex items-start space-x-2 text-sm">
+            <input id="terms" type="checkbox" required />
+            <label htmlFor="terms" className="text-gray-600">
+              Li e concordo com os{' '}
+              <span className="underline cursor-pointer text-blue-600">
+                Termos de Uso e Política de Privacidade
+              </span>
+              .
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-black text-white py-2 rounded hover:bg-gray-900 transition"
+          >
+            Criar conta
+          </button>
+
+          <div className="text-center text-sm">
+            Já tem cadastro?{' '}
+            <Link to="/login" className="text-blue-600 hover:underline">
+              Clique aqui
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

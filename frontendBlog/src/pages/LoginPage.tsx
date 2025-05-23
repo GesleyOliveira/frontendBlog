@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../styles/global.css'; 
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -9,7 +8,6 @@ export function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       const res = await fetch('http://localhost:3000/users/login', {
         method: 'POST',
@@ -23,11 +21,6 @@ export function LoginPage() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user_id', String(data.user.id));
         localStorage.setItem('avatar', data.user.avatar || '');
-
-        console.log('TOKEN:', data.token);
-        console.log('USER ID:', data.user.id);
-        console.log('AVATAR:', data.user.avatar);
-
         navigate('/home');
       } else {
         alert(data.message || 'Erro ao fazer login.');
@@ -38,37 +31,54 @@ export function LoginPage() {
   };
 
   return (
-    <div className="auth-container">
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h1>Bem-vindo de volta!</h1>
-        <p>Acesse sua conta para acompanhar artigos exclusivos, favoritar e muito mais.</p>
+    <div className="flex h-screen">
+      {/* Lado esquerdo (logo + fundo escuro) */}
+      <div className="hidden md:flex flex-col justify-center items-center bg-black text-white w-1/2">
+        <span className="text-7xl font-bold">M.</span>
+        <p className="mt-4 text-sm">Inovação ao Seu Alcance.</p>
+      </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+      {/* Lado direito (formulário) */}
+      <div className="flex flex-1 justify-center items-center bg-white">
+        <form onSubmit={handleSubmit} className="w-full max-w-md px-6">
+          <h2 className="text-center text-xl font-semibold mb-6">Conectar</h2>
 
-        <div className="auth-links">
-          <Link to="/forgot-password">Esqueceu a senha?</Link>
-        </div>
+          <label className="text-sm font-medium">Email</label>
+          <input
+            type="email"
+            placeholder="email@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full mt-1 mb-4 p-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-black"
+            required
+          />
 
-        <button type="submit">Login</button>
+          <label className="text-sm font-medium">Senha</label>
+          <input
+            type="password"
+            placeholder="****"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full mt-1 mb-2 p-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-black"
+            required
+          />
 
-        <div className="auth-footer">
-          <span>Novo usuário? </span>
-          <Link to="/register">Clique aqui</Link>
-        </div>
-      </form>
+          <div className="text-right text-sm text-gray-500 mb-4">
+            <Link to="/forgot-password">Esqueceu a senha?</Link>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-black text-white py-2 rounded hover:bg-gray-900 transition"
+          >
+            Entrar
+          </button>
+
+          <div className="mt-6 text-center text-sm text-gray-700">
+            Novo usuário? <Link to="/register" className="text-blue-600">Clique aqui</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

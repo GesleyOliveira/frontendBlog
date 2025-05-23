@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './components/PrivateRoute';
-
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';

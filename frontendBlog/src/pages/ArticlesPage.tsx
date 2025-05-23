@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Heart, Pencil } from 'lucide-react';
 import axios from 'axios';
-import '../styles/home.css';
 
 interface Author {
   id: number;
@@ -32,15 +31,10 @@ export function ArticlesPage() {
   const currentUserId = Number(localStorage.getItem('user_id')) || 0;
   const isLoggedIn = Boolean(token);
 
-  console.log('✅ CURRENT USER ID:', currentUserId);
-
   useEffect(() => {
     fetch('http://localhost:3000/articles')
       .then(res => res.json())
-      .then(data => {
-        console.log('📰 ARTICLES:', data);
-        setArticles(data);
-      })
+      .then(data => setArticles(data))
       .catch(() => alert('Erro ao carregar artigos.'));
   }, []);
 
@@ -70,7 +64,6 @@ export function ArticlesPage() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Tem certeza que deseja excluir este artigo?')) return;
-
     try {
       await axios.delete(`http://localhost:3000/articles/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -88,88 +81,95 @@ export function ArticlesPage() {
   const allArticles = [selectedArticle, ...otherArticles].filter(Boolean) as Article[];
 
   return (
-    <div className="home-container">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
-      {allArticles.map(article => {
-        const isAuthor = isLoggedIn && article.author.id === currentUserId;
+      <main className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allArticles.map(article => {
+          const isAuthor = isLoggedIn && article.author.id === currentUserId;
 
-        console.log(
-          `🧩 ARTIGO ${article.id} - Autor: ${article.author.id}, Usuário atual: ${currentUserId} ${isAuthor ? '✅ (autor)' : '🚫'}`
-        );
+          return (
+            <div
+              key={article.id}
+              onClick={() => navigate(`/articles/${article.id}`)}
+              className="cursor-pointer border rounded-lg overflow-hidden shadow hover:shadow-lg transition"
+            >
+              <img
+                src={`http://localhost:3000/uploads/${article.coverImage}`}
+                alt="Capa do artigo"
+                className="h-48 w-full object-cover"
+              />
 
-        return (
-          <div
-            key={article.id}
-            className="featured-article"
-            onClick={() => navigate(`/articles/${article.id}`)}
-            style={{ cursor: 'pointer' }}
-          >
-            <img src={`http://localhost:3000/uploads/${article.coverImage}`} alt="Capa do artigo" />
-            <h2>{article.title}</h2>
-            <p>{article.content.slice(0, 120)}...</p>
+              <div className="p-4 flex flex-col gap-2">
+                <h2 className="text-lg font-semibold">{article.title}</h2>
+                <p className="text-sm text-gray-600">{article.content.slice(0, 120)}...</p>
 
-            <div className="author-info">
-              <div className="author-details">
-                <img
-                  src={article.author.avatar
-                    ? `http://localhost:3000/uploads/${article.author.avatar}`
-                    : '/sem-foto.png'}
-                  alt="Autor"
-                />
-                <span className="author-text">
-                  Por {article.author.name} – {new Date(article.createdAt).toLocaleDateString('pt-BR')}
-                </span>
-              </div>
-
-              <div className="article-actions">
-                <Heart
-                  size={18}
-                  fill={liked.includes(article.id) ? 'red' : 'none'}
-                  stroke="red"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleLike(article.id);
-                  }}
-                  style={{ cursor: 'pointer' }}
-                />
-                {isAuthor && (
-                  <div className="edit-icon-wrapper">
-                    <Pencil
-                      size={18}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDropdownOpenId(article.id);
-                      }}
-                      style={{ cursor: 'pointer' }}
+                <div className="flex justify-between items-center mt-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <img
+                      src={
+                        article.author.avatar
+                          ? `http://localhost:3000/uploads/${article.author.avatar}`
+                          : '/sem-foto.png'
+                      }
+                      alt="Autor"
+                      className="w-6 h-6 rounded-full object-cover"
                     />
-                    {dropdownOpenId === article.id && (
-                      <div className="dropdown-actions">
-                        <button
-                          onClick={(e) => {
+                    <span>
+                      Por {article.author.name} –{' '}
+                      {new Date(article.createdAt).toLocaleDateString('pt-BR')}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Heart
+                      size={18}
+                      fill={liked.includes(article.id) ? 'red' : 'none'}
+                      stroke="red"
+                      onClick={e => {
+                        e.stopPropagation();
+                        toggleLike(article.id);
+                      }}
+                      className="hover:scale-110 transition"
+                    />
+                    {isAuthor && (
+                      <div className="relative">
+                        <Pencil
+                          size={18}
+                          onClick={e => {
                             e.stopPropagation();
-                            navigate(`/articles/edit/${article.id}`);
+                            setDropdownOpenId(prev => (prev === article.id ? null : article.id));
                           }}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(article.id);
-                          }}
-                        >
-                          Excluir
-                        </button>
+                          className="hover:scale-110 transition"
+                        />
+                        {dropdownOpenId === article.id && (
+                          <div
+                            className="absolute right-0 mt-1 w-28 bg-white border rounded shadow-md z-10"
+                            onClick={e => e.stopPropagation()}
+                          >
+                            <button
+                              className="block w-full px-3 py-1 text-sm hover:bg-gray-100"
+                              onClick={() => navigate(`/articles/edit/${article.id}`)}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              className="block w-full px-3 py-1 text-sm text-red-600 hover:bg-red-50"
+                              onClick={() => handleDelete(article.id)}
+                            >
+                              Excluir
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </main>
     </div>
   );
 }

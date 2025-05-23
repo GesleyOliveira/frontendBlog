@@ -1,7 +1,7 @@
 // src/pages/SettingsPage.tsx
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import '../styles/settings.css';
+
 
 export function SettingsPage() {
   const navigate = useNavigate();
